@@ -1593,7 +1593,6 @@
           "copy_github": "For GitHub",
           "description": "Version, loaded integrations and links to documentation",
           "home_assistant_logo": "Home Assistant logo",
-          "path_configuration": "Path to configuration.yaml: {path}",
           "developed_by": "Developed by a bunch of awesome people.",
           "license": "Published under the Apache 2.0 license",
           "source": "Source:",
@@ -2851,7 +2850,10 @@
             "error": "Error",
             "could_not_load": "Config flow could not be loaded",
             "not_loaded": "The integration could not be loaded, try to restart Home Assistant.",
-            "missing_credentials": "Setting up {integration} requires configuring application credentials. Do you want to do that now?"
+            "missing_credentials": "Setting up {integration} requires configuring application credentials. Do you want to do that now?",
+            "supported_brand_flow": "Support for {supported_brand} devices is provided by {flow_domain_name}. Do you want to continue?",
+            "missing_zwave_js": "To add a Z-Wave device, you first need to set up the Z-Wave integration. Do you want to do that now?",
+            "missing_zha": "To add a Zigbee device, you first need to set up the Zigbee Home Automation integration. Do you want to do that now?"
           }
         },
         "users": {
@@ -4012,7 +4014,8 @@
             "month": "Month",
             "year": "Year",
             "previous": "Previous",
-            "next": "Next"
+            "next": "Next",
+            "compare": "Compare Data"
           }
         },
         "reload_lovelace": "Reload UI"
@@ -4537,6 +4540,9 @@
         }
       },
       "energy": {
+        "compare": {
+          "info": "You are comparing the period {start} with the period {end}"
+        },
         "setup": {
           "next": "Next",
           "back": "Back",
@@ -4556,6 +4562,11 @@
           "energy_sources_table_title": "Sources",
           "energy_devices_graph_title": "Monitor individual devices"
         }
+      },
+      "history": {
+        "start_search": "Start by selecting an area, device or entity above",
+        "add_all": "Add all entities",
+        "remove_all": "Remove all selections"
       }
     },
     "tips": {

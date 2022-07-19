@@ -2,7 +2,6 @@ import { getConfigEntries } from "../../../../../../data/config_entries";
 import { DeviceRegistryEntry } from "../../../../../../data/device_registry";
 import {
   fetchZwaveIsAnyFirmwareUpdateInProgress,
-  fetchZwaveNodeFirmwareUpdateCapabilities,
   fetchZwaveNodeIsFirmwareUpdateInProgress,
   fetchZwaveNodeStatus,
 } from "../../../../../../data/zwave_js";
@@ -87,26 +86,26 @@ export const getZwaveDeviceActions = async (
     return actions;
   }
 
-  const [
-    firmwareUpdateCapabilities,
-    isAnyFirmwareUpdateInProgress,
-    isNodeFirmwareUpdateInProgress,
-  ] = await Promise.all([
-    fetchZwaveNodeFirmwareUpdateCapabilities(hass, device.id),
-    fetchZwaveIsAnyFirmwareUpdateInProgress(hass, entryId),
-    fetchZwaveNodeIsFirmwareUpdateInProgress(hass, device.id),
-  ]);
+  const [isAnyFirmwareUpdateInProgress, isNodeFirmwareUpdateInProgress] =
+    await Promise.all([
+      fetchZwaveIsAnyFirmwareUpdateInProgress(hass, entryId),
+      fetchZwaveNodeIsFirmwareUpdateInProgress(hass, device.id),
+    ]);
 
-  if (
-    firmwareUpdateCapabilities.firmware_upgradable &&
-    (!isAnyFirmwareUpdateInProgress || isNodeFirmwareUpdateInProgress)
-  ) {
+  if (!isAnyFirmwareUpdateInProgress || isNodeFirmwareUpdateInProgress) {
     actions.push({
       label: hass.localize(
         "ui.panel.config.zwave_js.device_info.update_firmware"
       ),
       action: async () => {
         if (
+          isNodeFirmwareUpdateInProgress ||
+          (await fetchZwaveNodeIsFirmwareUpdateInProgress(hass, device.id))
+        ) {
+          showZWaveJUpdateFirmwareNodeDialog(el, {
+            device,
+          });
+        } else if (
           await showConfirmationDialog(el, {
             text: hass.localize(
               "ui.panel.config.zwave_js.update_firmware.warning"
@@ -117,7 +116,6 @@ export const getZwaveDeviceActions = async (
         ) {
           showZWaveJUpdateFirmwareNodeDialog(el, {
             device,
-            firmwareUpdateCapabilities,
           });
         }
       },
