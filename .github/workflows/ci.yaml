@@ -87,6 +87,8 @@ jobs:
           IS_TEST: "true"
       - name: Archive Debug Build
         uses: actions/upload-artifact@v3
+        with:
+          path: ${{ github.workspace }}
   supervisor:
     name: Build supervisor
     needs: [lint, test]
