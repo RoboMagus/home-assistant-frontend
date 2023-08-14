@@ -52,6 +52,13 @@ export class HaTabs extends PaperTabs {
     return subTemplate;
   }
 
+  // or 'ready()'
+  public created() {
+    super.created();
+    console.log("ha-tabs::created()");
+    this._affectScroll(0); // Fix unintended chevrons on page reload
+  }
+
   // Get first and last tab's width for _affectScroll
   public _tabChanged(tab: PaperTabElement, old: PaperTabElement): void {
     super._tabChanged(tab, old);
@@ -74,6 +81,8 @@ export class HaTabs extends PaperTabs {
    * the jump in tab position so that the scroll still appears smooth.
    */
   public _affectScroll(dx: number): void {
+    console.log("ha-tabs::_affectScroll()");
+
     if (this._firstTabWidth === 0 || this._lastTabWidth === 0) {
       return;
     }
