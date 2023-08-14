@@ -55,6 +55,7 @@ export class HaTabs extends PaperTabs {
   // or 'ready()'
   public created() {
     super.created();
+    // eslint-disable-next-line no-console
     console.log("ha-tabs::created()");
     this._affectScroll(0); // Fix unintended chevrons on page reload
   }
@@ -81,6 +82,7 @@ export class HaTabs extends PaperTabs {
    * the jump in tab position so that the scroll still appears smooth.
    */
   public _affectScroll(dx: number): void {
+    // eslint-disable-next-line no-console
     console.log("ha-tabs::_affectScroll()");
 
     if (this._firstTabWidth === 0 || this._lastTabWidth === 0) {
