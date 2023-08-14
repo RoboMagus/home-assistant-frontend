@@ -85,6 +85,8 @@ jobs:
         run: ./node_modules/.bin/gulp build-app
         env:
           IS_TEST: "true"
+      - name: Archive Debug Build
+        uses: actions/upload-artifact@v3
   supervisor:
     name: Build supervisor
     needs: [lint, test]
