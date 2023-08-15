@@ -94,7 +94,7 @@ jobs:
       - name: Archive Debug Build
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ github.workspace }}
+          path: ./hass_frontend
   supervisor:
     name: Build supervisor
     needs: [lint, test]
