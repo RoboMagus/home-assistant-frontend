@@ -81,10 +81,16 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install --immutable
+      - name: list files before build
+        run: |
+          find .
       - name: Build Application
         run: ./node_modules/.bin/gulp build-app
         env:
           IS_TEST: "true"
+      - name: list files after build
+        run: |
+          find .
       - name: Archive Debug Build
         uses: actions/upload-artifact@v3
         with:
