@@ -83,7 +83,7 @@ export class HaTabs extends PaperTabs {
   public _affectScroll(dx: number): void {
     // eslint-disable-next-line no-console
     console.log("ha-tabs::_affectScroll(%d)", dx);
-    
+
     this.$.tabsContainer.scrollLeft += dx;
 
     const scrollLeft = this.$.tabsContainer.scrollLeft;
