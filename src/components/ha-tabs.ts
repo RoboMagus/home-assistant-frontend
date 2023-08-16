@@ -55,7 +55,7 @@ export class HaTabs extends PaperTabs {
   public override ready() {
     super.ready();
     // eslint-disable-next-line no-console
-    console.log("ha-tabs::created()");
+    console.log("ha-tabs::ready()");
     this._affectScroll(0); // Fix unintended chevrons on page reload
   }
 
@@ -83,11 +83,7 @@ export class HaTabs extends PaperTabs {
   public _affectScroll(dx: number): void {
     // eslint-disable-next-line no-console
     console.log("ha-tabs::_affectScroll(%d)", dx);
-
-    if (this._firstTabWidth === 0 || this._lastTabWidth === 0) {
-      return;
-    }
-
+    
     this.$.tabsContainer.scrollLeft += dx;
 
     const scrollLeft = this.$.tabsContainer.scrollLeft;
