@@ -52,9 +52,8 @@ export class HaTabs extends PaperTabs {
     return subTemplate;
   }
 
-  // or 'ready()'
-  public created() {
-    super.created();
+  public override ready() {
+    super.ready();
     // eslint-disable-next-line no-console
     console.log("ha-tabs::created()");
     this._affectScroll(0); // Fix unintended chevrons on page reload
