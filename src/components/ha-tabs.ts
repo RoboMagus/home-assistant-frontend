@@ -57,6 +57,7 @@ export class HaTabs extends PaperTabs {
     // eslint-disable-next-line no-console
     console.log("ha-tabs::ready()");
     this._affectScroll(0); // Fix unintended chevrons on page reload
+    setTimeout(() => { this._affectScroll(0) }, 10);
   }
 
   // Get first and last tab's width for _affectScroll
@@ -96,6 +97,9 @@ export class HaTabs extends PaperTabs {
       this._lastLeftHiddenState = this._leftHidden;
       this.$.tabsContainer.scrollLeft += this._leftHidden ? -23 : 23;
     }
+
+    // eslint-disable-next-line no-console
+    console.log("scrollLeft(%d), leftHidden(%d), rightHidden(%d), lastTabWidth(%d), tabContainerScrollSize(%d)", scrollLeft, this._leftHidden, this._rightHidden, this._lastTabWidth, this._tabContainerScrollSize);
   }
 }
 
