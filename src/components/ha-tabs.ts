@@ -11,6 +11,7 @@ const PaperTabs = customElements.get(
 
 let subTemplate: HTMLTemplateElement;
 
+// prettier-ignore
 @customElement("ha-tabs")
 export class HaTabs extends PaperTabs {
   private _firstTabWidth = 0;
@@ -81,10 +82,8 @@ export class HaTabs extends PaperTabs {
    * while scrolling and the tab container shrinks we can counteract
    * the jump in tab position so that the scroll still appears smooth.
    */
-  /* eslint-disable no-console */
-  // prettier-ignore
+  // eslint-disable no-console
   public _affectScroll(dx: number): void {
-    // eslint-disable-next-line no-console
     console.log("ha-tabs::_affectScroll(%d)", dx);
 
     this.$.tabsContainer.scrollLeft += dx;
