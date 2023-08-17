@@ -98,7 +98,7 @@ export class HaTabs extends PaperTabs {
       this.$.tabsContainer.scrollLeft += this._leftHidden ? -23 : 23;
     }
 
-    /* eslint-disable no-console*/
+    /* eslint-disable no-console */
     // prettier-ignore
     console.log(
       "scrollLeft(%d), leftHidden(%d), rightHidden(%d), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
