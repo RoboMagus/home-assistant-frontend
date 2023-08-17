@@ -66,20 +66,23 @@ export class HaTabs extends PaperTabs {
   public override ready() {
     super.ready();
     console.log("ha-tabs::ready()");
+    this._leftHidden = true;
+    this._rightHidden = true;
     // this._affectScroll(0); // Fix unintended chevrons on page reload
     // setTimeout(() => { this._affectScroll(0) }, 10);
   }
   
   public override attached() {
     super.attached();
-    console.log("ha-tabs::attached()");
     this._setTabWidths();
+    console.log("ha-tabs::attached(), firstTabWidth(%d), lastTabWidth(%d)", this._firstTabWidth, this._lastTabWidth);
   }
 
   // Get first and last tab's width for _affectScroll
   public _tabChanged(tab: PaperTabElement, old: PaperTabElement): void {
     super._tabChanged(tab, old);
     this._setTabWidths();
+    console.log("ha-tabs::tabChanged(), firstTabWidth(%d), lastTabWidth(%d)", this._firstTabWidth, this._lastTabWidth);
 
     // Scroll active tab into view if needed.
     const selected = this.querySelector(".iron-selected");
