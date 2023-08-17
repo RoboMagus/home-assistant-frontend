@@ -55,21 +55,31 @@ export class HaTabs extends PaperTabs {
     return subTemplate;
   }
 
-  public override ready() {
-    super.ready();
-    console.log("ha-tabs::ready()");
-    this._affectScroll(0); // Fix unintended chevrons on page reload
-    setTimeout(() => { this._affectScroll(0) }, 10);
-  }
-
-  // Get first and last tab's width for _affectScroll
-  public _tabChanged(tab: PaperTabElement, old: PaperTabElement): void {
-    super._tabChanged(tab, old);
+  private _setTabWidths() {
     const tabs = this.querySelectorAll("paper-tab:not(.hide-tab)");
     if (tabs.length > 0) {
       this._firstTabWidth = tabs[0].clientWidth;
       this._lastTabWidth = tabs[tabs.length - 1].clientWidth;
     }
+  }
+
+  public override ready() {
+    super.ready();
+    console.log("ha-tabs::ready()");
+    // this._affectScroll(0); // Fix unintended chevrons on page reload
+    // setTimeout(() => { this._affectScroll(0) }, 10);
+  }
+  
+  public override attached() {
+    super.attached();
+    console.log("ha-tabs::attached()");
+    _setTabWidths();
+  }
+
+  // Get first and last tab's width for _affectScroll
+  public _tabChanged(tab: PaperTabElement, old: PaperTabElement): void {
+    super._tabChanged(tab, old);
+    _setTabWidths();
 
     // Scroll active tab into view if needed.
     const selected = this.querySelector(".iron-selected");
@@ -85,6 +95,19 @@ export class HaTabs extends PaperTabs {
    */
   public _affectScroll(dx: number): void {
     console.log("ha-tabs::_affectScroll(%d)", dx);
+    console.log(
+      "BEFORE: scrollLeft(%d), leftHidden(%s), rightHidden(%s), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
+      scrollLeft,
+      this._leftHidden,
+      this._rightHidden,
+      this._firstTabWidth,
+      this._lastTabWidth,
+      this._tabContainerScrollSize,
+    );
+
+    if (this._firstTabWidth === 0 || this._lastTabWidth === 0) {
+      return;
+    }
 
     this.$.tabsContainer.scrollLeft += dx;
 
@@ -100,7 +123,7 @@ export class HaTabs extends PaperTabs {
     }
 
     console.log(
-      "scrollLeft(%d), leftHidden(%d), rightHidden(%d), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
+      "AFTER: scrollLeft(%d), leftHidden(%s), rightHidden(%s), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
       scrollLeft,
       this._leftHidden,
       this._rightHidden,
