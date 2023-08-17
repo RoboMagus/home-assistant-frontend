@@ -55,14 +55,6 @@ export class HaTabs extends PaperTabs {
     return subTemplate;
   }
 
-  private _setTabWidths() {
-    const tabs = this.querySelectorAll("paper-tab:not(.hide-tab)");
-    if (tabs.length > 0) {
-      this._firstTabWidth = tabs[0].clientWidth;
-      this._lastTabWidth = tabs[tabs.length - 1].clientWidth;
-    }
-  }
-
   public override ready() {
     super.ready();
     console.log("ha-tabs::ready()");
@@ -71,17 +63,19 @@ export class HaTabs extends PaperTabs {
     // this._affectScroll(0); // Fix unintended chevrons on page reload
     // setTimeout(() => { this._affectScroll(0) }, 10);
   }
-  
-  public override attached() {
-    super.attached();
-    this._setTabWidths();
-    console.log("ha-tabs::attached(), firstTabWidth(%d), lastTabWidth(%d)", this._firstTabWidth, this._lastTabWidth);
-  }
 
   // Get first and last tab's width for _affectScroll
   public _tabChanged(tab: PaperTabElement, old: PaperTabElement): void {
     super._tabChanged(tab, old);
-    this._setTabWidths();
+    const tabs = this.querySelectorAll("paper-tab:not(.hide-tab)");
+    if (tabs.length > 0) {
+      // On first population ensure chevron scrol indicators are displayed propperly
+      if(this._firstTabWidth == 0 || this._lastTabWidth == 0) {
+        this.async(function(){this._affectScroll(0);})
+      }
+      this._firstTabWidth = tabs[0].clientWidth;
+      this._lastTabWidth = tabs[tabs.length - 1].clientWidth;
+    }
     console.log("ha-tabs::tabChanged(), firstTabWidth(%d), lastTabWidth(%d)", this._firstTabWidth, this._lastTabWidth);
 
     // Scroll active tab into view if needed.
