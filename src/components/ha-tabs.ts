@@ -73,13 +73,13 @@ export class HaTabs extends PaperTabs {
   public override attached() {
     super.attached();
     console.log("ha-tabs::attached()");
-    _setTabWidths();
+    this._setTabWidths();
   }
 
   // Get first and last tab's width for _affectScroll
   public _tabChanged(tab: PaperTabElement, old: PaperTabElement): void {
     super._tabChanged(tab, old);
-    _setTabWidths();
+    this._setTabWidths();
 
     // Scroll active tab into view if needed.
     const selected = this.querySelector(".iron-selected");
@@ -96,8 +96,7 @@ export class HaTabs extends PaperTabs {
   public _affectScroll(dx: number): void {
     console.log("ha-tabs::_affectScroll(%d)", dx);
     console.log(
-      "BEFORE: scrollLeft(%d), leftHidden(%s), rightHidden(%s), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
-      scrollLeft,
+      "BEFORE: leftHidden(%s), rightHidden(%s), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
       this._leftHidden,
       this._rightHidden,
       this._firstTabWidth,
