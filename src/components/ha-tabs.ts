@@ -71,7 +71,9 @@ export class HaTabs extends PaperTabs {
     if (tabs.length > 0) {
       // On first population ensure chevron scrol indicators are displayed propperly
       if(this._firstTabWidth === 0 || this._lastTabWidth === 0) {
-        this.async(function(){this._affectScroll(0);})
+        this.async(function() {
+          this._affectScroll(0);
+        });
       }
       this._firstTabWidth = tabs[0].clientWidth;
       this._lastTabWidth = tabs[tabs.length - 1].clientWidth;
