@@ -99,7 +99,15 @@ export class HaTabs extends PaperTabs {
     }
 
     // eslint-disable-next-line no-console
-    console.log("scrollLeft(%d), leftHidden(%d), rightHidden(%d), lastTabWidth(%d), tabContainerScrollSize(%d)", scrollLeft, this._leftHidden, this._rightHidden, this._lastTabWidth, this._tabContainerScrollSize);
+    console.log(
+      "scrollLeft(%d), leftHidden(%d), rightHidden(%d), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
+      scrollLeft,
+      this._leftHidden,
+      this._rightHidden,
+      this._firstTabWidth,
+      this._lastTabWidth,
+      this._tabContainerScrollSize,
+    );
   }
 }
 
