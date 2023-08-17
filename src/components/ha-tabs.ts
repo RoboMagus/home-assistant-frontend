@@ -81,6 +81,8 @@ export class HaTabs extends PaperTabs {
    * while scrolling and the tab container shrinks we can counteract
    * the jump in tab position so that the scroll still appears smooth.
    */
+  /* eslint-disable no-console */
+  // prettier-ignore
   public _affectScroll(dx: number): void {
     // eslint-disable-next-line no-console
     console.log("ha-tabs::_affectScroll(%d)", dx);
@@ -98,8 +100,6 @@ export class HaTabs extends PaperTabs {
       this.$.tabsContainer.scrollLeft += this._leftHidden ? -23 : 23;
     }
 
-    /* eslint-disable no-console */
-    // prettier-ignore
     console.log(
       "scrollLeft(%d), leftHidden(%d), rightHidden(%d), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
       scrollLeft,
