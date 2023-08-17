@@ -98,6 +98,7 @@ export class HaTabs extends PaperTabs {
    */
   public _affectScroll(dx: number): void {
     console.log("ha-tabs::_affectScroll(%d)", dx);
+    console.trace();
     console.log(
       "BEFORE: leftHidden(%s), rightHidden(%s), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
       this._leftHidden,
