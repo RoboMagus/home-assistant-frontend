@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import type { PaperIconButtonElement } from "@polymer/paper-icon-button/paper-icon-button";
 import type { PaperTabElement } from "@polymer/paper-tabs/paper-tab";
 import "@polymer/paper-tabs/paper-tabs";
@@ -55,7 +57,6 @@ export class HaTabs extends PaperTabs {
 
   public override ready() {
     super.ready();
-    // eslint-disable-next-line no-console
     console.log("ha-tabs::ready()");
     this._affectScroll(0); // Fix unintended chevrons on page reload
     setTimeout(() => { this._affectScroll(0) }, 10);
@@ -82,7 +83,6 @@ export class HaTabs extends PaperTabs {
    * while scrolling and the tab container shrinks we can counteract
    * the jump in tab position so that the scroll still appears smooth.
    */
-  // eslint-disable no-console
   public _affectScroll(dx: number): void {
     console.log("ha-tabs::_affectScroll(%d)", dx);
 
