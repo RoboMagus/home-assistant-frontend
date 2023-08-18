@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import type { PaperIconButtonElement } from "@polymer/paper-icon-button/paper-icon-button";
 import type { PaperTabElement } from "@polymer/paper-tabs/paper-tab";
 import "@polymer/paper-tabs/paper-tabs";
@@ -13,7 +11,6 @@ const PaperTabs = customElements.get(
 
 let subTemplate: HTMLTemplateElement;
 
-// prettier-ignore
 @customElement("ha-tabs")
 export class HaTabs extends PaperTabs {
   private _firstTabWidth = 0;
@@ -55,30 +52,14 @@ export class HaTabs extends PaperTabs {
     return subTemplate;
   }
 
-  public override ready() {
-    super.ready();
-    console.log("ha-tabs::ready()");
-    this._leftHidden = true;
-    this._rightHidden = true;
-    // this._affectScroll(0); // Fix unintended chevrons on page reload
-    // setTimeout(() => { this._affectScroll(0) }, 10);
-  }
-
   // Get first and last tab's width for _affectScroll
   public _tabChanged(tab: PaperTabElement, old: PaperTabElement): void {
     super._tabChanged(tab, old);
     const tabs = this.querySelectorAll("paper-tab:not(.hide-tab)");
     if (tabs.length > 0) {
-      // On first population ensure chevron scrol indicators are displayed propperly
-      // if(this._firstTabWidth === 0 || this._lastTabWidth === 0) {
-      //   this.async(function (this: HaTabs) {
-      //     this._affectScroll(0);
-      //   });
-      // } --> Disabled for now to test if _affectScroll is enough when called after (selected)
       this._firstTabWidth = tabs[0].clientWidth;
       this._lastTabWidth = tabs[tabs.length - 1].clientWidth;
     }
-    console.log("ha-tabs::tabChanged(), firstTabWidth(%d), lastTabWidth(%d)", this._firstTabWidth, this._lastTabWidth);
 
     // Scroll active tab into view if needed.
     const selected = this.querySelector(".iron-selected");
@@ -94,17 +75,6 @@ export class HaTabs extends PaperTabs {
    * the jump in tab position so that the scroll still appears smooth.
    */
   public _affectScroll(dx: number): void {
-    console.log("ha-tabs::_affectScroll(%d)", dx);
-    console.trace();
-    console.log(
-      "BEFORE: leftHidden(%s), rightHidden(%s), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
-      this._leftHidden,
-      this._rightHidden,
-      this._firstTabWidth,
-      this._lastTabWidth,
-      this._tabContainerScrollSize,
-    );
-
     if (this._firstTabWidth === 0 || this._lastTabWidth === 0) {
       return;
     }
@@ -121,16 +91,6 @@ export class HaTabs extends PaperTabs {
       this._lastLeftHiddenState = this._leftHidden;
       this.$.tabsContainer.scrollLeft += this._leftHidden ? -23 : 23;
     }
-
-    console.log(
-      "AFTER: scrollLeft(%d), leftHidden(%s), rightHidden(%s), firstTabWidth(%d), lastTabWidth(%d), tabContainerScrollSize(%d)",
-      scrollLeft,
-      this._leftHidden,
-      this._rightHidden,
-      this._firstTabWidth,
-      this._lastTabWidth,
-      this._tabContainerScrollSize,
-    );
   }
 }
 
