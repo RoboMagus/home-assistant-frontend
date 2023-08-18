@@ -70,11 +70,11 @@ export class HaTabs extends PaperTabs {
     const tabs = this.querySelectorAll("paper-tab:not(.hide-tab)");
     if (tabs.length > 0) {
       // On first population ensure chevron scrol indicators are displayed propperly
-      //if(this._firstTabWidth === 0 || this._lastTabWidth === 0) {
-      //  this.async(function (this: HaTabs) {
-      //    this._affectScroll(0);
-      //  });
-      //} --> Disabled for now to test if _affectScroll is enough when called after (selected)
+      // if(this._firstTabWidth === 0 || this._lastTabWidth === 0) {
+      //   this.async(function (this: HaTabs) {
+      //     this._affectScroll(0);
+      //   });
+      // } --> Disabled for now to test if _affectScroll is enough when called after (selected)
       this._firstTabWidth = tabs[0].clientWidth;
       this._lastTabWidth = tabs[tabs.length - 1].clientWidth;
     }
