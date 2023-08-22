@@ -16,9 +16,9 @@ import {
 } from "../../../common/entity/compute_attribute_display";
 import { computeStateDisplay } from "../../../common/entity/compute_state_display";
 import { supportsFeature } from "../../../common/entity/supports-feature";
-import { formatNumber } from "../../../common/number/format_number";
-import { blankBeforePercent } from "../../../common/translations/blank_before_percent";
 import "../../../components/ha-control-select-menu";
+import "../../../components/ha-list-item";
+import { UNAVAILABLE } from "../../../data/entity";
 import {
   HumidifierEntity,
   HumidifierEntityFeature,
@@ -57,7 +57,7 @@ class MoreInfoHumidifier extends LitElement {
       HumidifierEntityFeature.MODES
     );
 
-    const currentHumidity = this.stateObj.attributes.current_humidity;
+    const currentHumidity = this.stateObj.attributes.current_humidity as number;
 
     return html`
       <div class="current">
@@ -73,10 +73,11 @@ class MoreInfoHumidifier extends LitElement {
                   )}
                 </p>
                 <p class="value">
-                  ${formatNumber(
-                    currentHumidity,
-                    this.hass.locale
-                  )}${blankBeforePercent(this.hass.locale)}%
+                  ${this.hass.formatEntityAttributeValue(
+                    this.stateObj,
+                    "current_humidity",
+                    currentHumidity
+                  )}
                 </p>
               </div>
             `
@@ -95,13 +96,14 @@ class MoreInfoHumidifier extends LitElement {
           <ha-control-select-menu
             .label=${this.hass.localize("ui.card.humidifier.state")}
             .value=${this.stateObj.state}
+            .disabled=${this.stateObj.state === UNAVAILABLE}
             fixedMenuPosition
             naturalMenuWidth
             @selected=${this._handleStateChanged}
             @closed=${stopPropagation}
           >
             <ha-svg-icon slot="icon" .path=${mdiPower}></ha-svg-icon>
-            <mwc-list-item value="off">
+            <ha-list-item value="off">
               ${computeStateDisplay(
                 this.hass.localize,
                 this.stateObj,
@@ -110,8 +112,8 @@ class MoreInfoHumidifier extends LitElement {
                 this.hass.entities,
                 "off"
               )}
-            </mwc-list-item>
-            <mwc-list-item value="on">
+            </ha-list-item>
+            <ha-list-item value="on">
               ${computeStateDisplay(
                 this.hass.localize,
                 this.stateObj,
@@ -120,7 +122,7 @@ class MoreInfoHumidifier extends LitElement {
                 this.hass.entities,
                 "on"
               )}
-            </mwc-list-item>
+            </ha-list-item>
           </ha-control-select-menu>
 
           ${supportModes
@@ -128,17 +130,15 @@ class MoreInfoHumidifier extends LitElement {
                 <ha-control-select-menu
                   .label=${hass.localize("ui.card.humidifier.mode")}
                   .value=${stateObj.attributes.mode}
+                  .disabled=${this.stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handleModeChanged}
-                  @action=${this._handleModeChanged}
                   @closed=${stopPropagation}
                 >
                   <ha-svg-icon
                     slot="icon"
-                    .path=${stateObj.attributes.mode
-                      ? computeHumidiferModeIcon(stateObj.attributes.mode)
-                      : mdiTuneVariant}
+                    .path=${mdiTuneVariant}
                   ></ha-svg-icon>
                   ${stateObj.attributes.available_modes!.map(
                     (mode) => html`
@@ -192,6 +192,19 @@ class MoreInfoHumidifier extends LitElement {
     );
   }
 
+  private _handleModeChanged(ev) {
+    const newVal = ev.target.value || null;
+    this._mode = newVal;
+    this._callServiceHelper(
+      this.stateObj!.attributes.mode,
+      newVal,
+      "set_mode",
+      {
+        mode: newVal,
+      }
+    );
+  }
+
   private async _callServiceHelper(
     oldVal: unknown,
     newVal: unknown,
@@ -228,23 +241,6 @@ class MoreInfoHumidifier extends LitElement {
     if (this.stateObj === undefined) {
       this.stateObj = curState;
     }
-  }
-
-  private _handleModeChanged(ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-
-    const index = ev.detail.index;
-    const newVal = this.stateObj!.attributes.available_modes![index];
-    const oldVal = this._mode;
-
-    if (!newVal || oldVal === newVal) return;
-
-    this._mode = newVal;
-    this.hass.callService("humidifier", "set_mode", {
-      entity_id: this.stateObj!.entity_id,
-      mode: newVal,
-    });
   }
 
   static get styles(): CSSResultGroup {

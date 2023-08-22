@@ -3,11 +3,10 @@ import { CSSResultGroup, LitElement, css, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators";
 import { stopPropagation } from "../../../common/dom/stop_propagation";
 import { supportsFeature } from "../../../common/entity/supports-feature";
-import { formatNumber } from "../../../common/number/format_number";
 import "../../../components/ha-control-select-menu";
 import "../../../components/ha-list-item";
+import { UNAVAILABLE } from "../../../data/entity";
 import {
-  OperationMode,
   WaterHeaterEntity,
   WaterHeaterEntityFeature,
   compareWaterHeaterOperationMode,
@@ -54,8 +53,10 @@ class MoreInfoWaterHeater extends LitElement {
                   )}
                 </p>
                 <p class="value">
-                  ${formatNumber(currentTemperature, this.hass.locale)}
-                  ${this.hass.config.unit_system.temperature}
+                  ${this.hass.formatEntityAttributeValue(
+                    this.stateObj,
+                    "current_temperature"
+                  )}
                 </p>
               </div>
             `
@@ -77,6 +78,7 @@ class MoreInfoWaterHeater extends LitElement {
                     "operation"
                   )}
                   .value=${stateObj.state}
+                  .disabled=${stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handleOperationModeChanged}
@@ -84,9 +86,7 @@ class MoreInfoWaterHeater extends LitElement {
                 >
                   <ha-svg-icon
                     slot="icon"
-                    .path=${computeOperationModeIcon(
-                      stateObj.state as OperationMode
-                    ) ?? mdiWaterBoiler}
+                    .path=${mdiWaterBoiler}
                   ></ha-svg-icon>
                   ${stateObj.attributes.operation_list
                     .concat()
@@ -113,25 +113,21 @@ class MoreInfoWaterHeater extends LitElement {
                     "away_mode"
                   )}
                   .value=${stateObj.attributes.away_mode}
+                  .disabled=${stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handleAwayModeChanged}
                   @closed=${stopPropagation}
                 >
-                  <ha-svg-icon
-                    slot="icon"
-                    .path=${stateObj.attributes.away_mode === "on"
-                      ? mdiAccountArrowRight
-                      : mdiAccount}
-                  ></ha-svg-icon>
-                  <ha-list-item .value=${"on"} graphic="icon">
+                  <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
+                  <ha-list-item value="on" graphic="icon">
                     <ha-svg-icon
                       slot="graphic"
                       .path=${mdiAccountArrowRight}
                     ></ha-svg-icon>
                     ${this.hass.localize("state.default.on")}
                   </ha-list-item>
-                  <ha-list-item .value=${"off"} graphic="icon">
+                  <ha-list-item value="off" graphic="icon">
                     <ha-svg-icon
                       slot="graphic"
                       .path=${mdiAccount}

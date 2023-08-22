@@ -18,8 +18,6 @@ import { property, state } from "lit/decorators";
 import { fireEvent } from "../../../common/dom/fire_event";
 import { stopPropagation } from "../../../common/dom/stop_propagation";
 import { supportsFeature } from "../../../common/entity/supports-feature";
-import { formatNumber } from "../../../common/number/format_number";
-import { blankBeforePercent } from "../../../common/translations/blank_before_percent";
 import "../../../components/ha-control-select-menu";
 import "../../../components/ha-icon-button-group";
 import "../../../components/ha-icon-button-toggle";
@@ -29,7 +27,6 @@ import "../../../components/ha-switch";
 import {
   ClimateEntity,
   ClimateEntityFeature,
-  HvacMode,
   compareClimateHvacModes,
   computeFanModeIcon,
   computeHvacModeIcon,
@@ -59,7 +56,6 @@ class MoreInfoClimate extends LitElement {
       return nothing;
     }
 
-    const hass = this.hass;
     const stateObj = this.stateObj;
 
     const supportTargetHumidity = supportsFeature(
@@ -94,8 +90,10 @@ class MoreInfoClimate extends LitElement {
                   )}
                 </p>
                 <p class="value">
-                  ${formatNumber(currentTemperature, this.hass.locale)}
-                  ${this.hass.config.unit_system.temperature}
+                  ${this.hass.formatEntityAttributeValue(
+                    this.stateObj,
+                    "current_temperature"
+                  )}
                 </p>
               </div>
             `
@@ -110,10 +108,10 @@ class MoreInfoClimate extends LitElement {
                   )}
                 </p>
                 <p class="value">
-                  ${formatNumber(
-                    currentHumidity,
-                    this.hass.locale
-                  )}${blankBeforePercent(this.hass.locale)}%
+                  ${this.hass.formatEntityAttributeValue(
+                    this.stateObj,
+                    "current_humidity"
+                  )}
                 </p>
               </div>
             `
@@ -168,18 +166,18 @@ class MoreInfoClimate extends LitElement {
       <div class="secondary-controls">
         <div class="secondary-controls-scroll">
           <ha-control-select-menu
-            .label=${hass.localize("ui.card.climate.operation")}
+            .label=${this.hass.formatEntityAttributeName(
+              this.stateObj,
+              "hvac_mode"
+            )}
             .value=${stateObj.state}
+            .disabled=${this.stateObj.state === UNAVAILABLE}
             fixedMenuPosition
             naturalMenuWidth
             @selected=${this._handleOperationModeChanged}
             @closed=${stopPropagation}
           >
-            <ha-svg-icon
-              slot="icon"
-              .path=${computeHvacModeIcon(stateObj.state as HvacMode) ??
-              mdiThermostat}
-            ></ha-svg-icon>
+            <ha-svg-icon slot="icon" .path=${mdiThermostat}></ha-svg-icon>
             ${stateObj.attributes.hvac_modes
               .concat()
               .sort(compareClimateHvacModes)
@@ -203,6 +201,7 @@ class MoreInfoClimate extends LitElement {
                     "preset_mode"
                   )}
                   .value=${stateObj.attributes.preset_mode}
+                  .disabled=${this.stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handlePresetmodeChanged}
@@ -210,9 +209,7 @@ class MoreInfoClimate extends LitElement {
                 >
                   <ha-svg-icon
                     slot="icon"
-                    .path=${stateObj.attributes.preset_mode
-                      ? computePresetModeIcon(stateObj.attributes.preset_mode)
-                      : mdiTuneVariant}
+                    .path=${mdiTuneVariant}
                   ></ha-svg-icon>
                   ${stateObj.attributes.preset_modes!.map(
                     (mode) => html`
@@ -240,17 +237,13 @@ class MoreInfoClimate extends LitElement {
                     "fan_mode"
                   )}
                   .value=${stateObj.attributes.fan_mode}
+                  .disabled=${this.stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handleFanModeChanged}
                   @closed=${stopPropagation}
                 >
-                  <ha-svg-icon
-                    slot="icon"
-                    .path=${stateObj.attributes.fan_mode
-                      ? computeFanModeIcon(stateObj.attributes.fan_mode)
-                      : mdiFan}
-                  ></ha-svg-icon>
+                  <ha-svg-icon slot="icon" .path=${mdiFan}></ha-svg-icon>
                   ${stateObj.attributes.fan_modes!.map(
                     (mode) => html`
                       <ha-list-item .value=${mode} graphic="icon">
@@ -277,17 +270,13 @@ class MoreInfoClimate extends LitElement {
                     "swing_mode"
                   )}
                   .value=${stateObj.attributes.swing_mode}
+                  .disabled=${this.stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handleSwingmodeChanged}
                   @closed=${stopPropagation}
                 >
-                  <ha-svg-icon
-                    slot="icon"
-                    .path=${stateObj.attributes.swing_mode
-                      ? computeSwingModeIcon(stateObj.attributes.swing_mode)
-                      : haOscillating}
-                  ></ha-svg-icon>
+                  <ha-svg-icon slot="icon" .path=${haOscillating}></ha-svg-icon>
                   ${stateObj.attributes.swing_modes!.map(
                     (mode) => html`
                       <ha-list-item .value=${mode} graphic="icon">

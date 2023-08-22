@@ -139,6 +139,13 @@
         "drying": "{name} drying",
         "on_entity": "{name} on"
       },
+      "lawn_mower": {
+        "actions": {
+          "resume_mowing": "Resume mowing",
+          "start_mowing": "Start mowing",
+          "dock": "Return to dock"
+        }
+      },
       "light": {
         "brightness": "Brightness",
         "color_temperature": "Color temperature",
@@ -1005,6 +1012,13 @@
         "humidifier": {
           "target_label": "[%key:ui::dialogs::more_info_control::climate::target_label%]",
           "target": "[%key:ui::dialogs::more_info_control::climate::target%]"
+        },
+        "lawn_mower": {
+          "activity": "Activity",
+          "commands": "Lawn mower commands:",
+          "start_mowing": "Start mowing",
+          "pause": "Pause",
+          "dock": "Return to dock"
         },
         "water_heater": {
           "target": "[%key:ui::dialogs::more_info_control::climate::target%]"
@@ -2507,7 +2521,7 @@
                   "label": "And",
                   "description": {
                     "no_conditions": "Test if multiple conditions match",
-                    "full": "Test if any of {count} {count, plural,\n one {condition match}\n other {conditions matches}\n}"
+                    "full": "Test if {count} {count, plural,\n one {condition match}\n other {conditions matches}\n}"
                   }
                 },
                 "device": {
@@ -3558,6 +3572,7 @@
             "finish": "Finish",
             "submit": "Submit",
             "next": "Next",
+            "preview": "Preview",
             "found_following_devices": "We found the following devices",
             "yaml_only_title": "This device cannot be added from the UI",
             "yaml_only": "You can add this device by adding it to your ''configuration.yaml''. See the documentation for more information.",
@@ -3707,6 +3722,9 @@
           "add_open_thread_border_router": "Add an OpenThread border router",
           "reset_border_router": "Reset border router",
           "add_to_my_network": "Add to preferred network",
+          "default_router_not_found": "The border router used for Android + iOS credentials for this network could not be found.",
+          "default_router": "Used for Android + iOS credentials",
+          "set_default_router": "Use router for Android + iOS credentials",
           "no_routers_otbr_network": "No border routers where found, maybe the border router is not configured correctly. You can try to reset it to the factory settings.",
           "add_dataset_from_tlv": "Add dataset from TLV",
           "add_dataset": "Add Thread dataset",
@@ -4964,6 +4982,9 @@
                   "cover-open-close": {
                     "label": "Cover open/close"
                   },
+                  "cover-position": {
+                    "label": "Cover position"
+                  },
                   "cover-tilt": {
                     "label": "Cover tilt"
                   },
@@ -4985,6 +5006,9 @@
                   "light-brightness": {
                     "label": "Light brightness"
                   },
+                  "light-color-temp": {
+                    "label": "Light color temperature"
+                  },
                   "vacuum-commands": {
                     "label": "Vacuum commands",
                     "commands": "Commands",
@@ -4994,6 +5018,22 @@
                       "clean_spot": "[%key:ui::dialogs::more_info_control::vacuum::clean_spot%]",
                       "locate": "[%key:ui::dialogs::more_info_control::vacuum::locate%]",
                       "return_home": "[%key:ui::dialogs::more_info_control::vacuum::return_home%]"
+                    }
+                  },
+                  "climate-hvac-modes": {
+                    "label": "Climate HVAC modes",
+                    "hvac_modes": "HVAC modes"
+                  },
+                  "water-heater-operation-modes": {
+                    "label": "Water heater operation modes",
+                    "operation_modes": "Operation modes"
+                  },
+                  "lawn-mower-commands": {
+                    "label": "Lawn mower commands",
+                    "commands": "Commands",
+                    "commands_list": {
+                      "start_pause": "Start Pause",
+                      "dock": "[%key:ui::dialogs::more_info_control::lawn_mower::dock%]"
                     }
                   }
                 }

@@ -112,7 +112,7 @@ class MoreInfoFan extends LitElement {
 
     const positionStateDisplay = computeFanSpeedStateDisplay(
       this.stateObj!,
-      this.hass.locale,
+      this.hass,
       liveValue
     );
 
@@ -201,6 +201,7 @@ class MoreInfoFan extends LitElement {
                     "preset_mode"
                   )}
                   .value=${this.stateObj.attributes.preset_mode}
+                  .disabled=${this.stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handlePresetMode}
@@ -232,18 +233,14 @@ class MoreInfoFan extends LitElement {
                     "direction"
                   )}
                   .value=${this.stateObj.attributes.direction}
+                  .disabled=${this.stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handleDirection}
                   @closed=${stopPropagation}
                 >
-                  <ha-svg-icon
-                    slot="icon"
-                    .path=${this.stateObj.attributes.direction === "reverse"
-                      ? mdiRotateLeft
-                      : mdiRotateRight}
-                  ></ha-svg-icon>
-                  <ha-list-item .value=${"forward"} graphic="icon">
+                  <ha-svg-icon slot="icon" .path=${mdiRotateLeft}></ha-svg-icon>
+                  <ha-list-item value="forward" graphic="icon">
                     <ha-svg-icon
                       slot="graphic"
                       .path=${mdiRotateRight}
@@ -254,7 +251,7 @@ class MoreInfoFan extends LitElement {
                       "forward"
                     )}
                   </ha-list-item>
-                  <ha-list-item .value=${"reverse"} graphic="icon">
+                  <ha-list-item value="reverse" graphic="icon">
                     <ha-svg-icon
                       slot="graphic"
                       .path=${mdiRotateLeft}
@@ -276,6 +273,7 @@ class MoreInfoFan extends LitElement {
                     "oscillating"
                   )}
                   .value=${this.stateObj.attributes.oscillating ? "on" : "off"}
+                  .disabled=${this.stateObj.state === UNAVAILABLE}
                   fixedMenuPosition
                   naturalMenuWidth
                   @selected=${this._handleOscillating}
@@ -283,18 +281,16 @@ class MoreInfoFan extends LitElement {
                 >
                   <ha-svg-icon
                     slot="icon"
-                    .path=${this.stateObj.attributes.oscillating
-                      ? haOscillating
-                      : haOscillatingOff}
+                    .path=${haOscillatingOff}
                   ></ha-svg-icon>
-                  <ha-list-item .value=${"on"} graphic="icon">
+                  <ha-list-item value="on" graphic="icon">
                     <ha-svg-icon
                       slot="graphic"
                       .path=${haOscillating}
                     ></ha-svg-icon>
                     ${this.hass.localize("state.default.on")}
                   </ha-list-item>
-                  <ha-list-item .value=${"off"} graphic="icon">
+                  <ha-list-item value="off" graphic="icon">
                     <ha-svg-icon
                       slot="graphic"
                       .path=${haOscillatingOff}
