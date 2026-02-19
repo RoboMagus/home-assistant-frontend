@@ -1372,9 +1372,9 @@ class HUIRoot extends LitElement {
         }
         ha-tab-group::part(nav) {
           padding: 0;
-        }
-        ha-tab-group::part(nav) > .nav {
-          height: var(--header-height);
+          & .nav {
+            height: var(--header-height);
+          }
         }
         ha-tab-group::part(scroll-button) {
           padding-top: 4px;
